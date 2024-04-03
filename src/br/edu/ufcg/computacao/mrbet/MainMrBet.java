@@ -14,8 +14,7 @@ public class MainMrBet {
 			comando(escolha, mb, scanner);
 		}
 	}
-	
-	
+		
 	/**
 	 * Exibe o menu e captura a escolha do/a usuário/a.
 	 * 
@@ -79,6 +78,5 @@ public class MainMrBet {
 		System.out.println("\nVlw flw o/");
 		System.exit(0);
 	}
-
 		
 }
