@@ -2,12 +2,17 @@ package br.edu.ufcg.computacao.mrbet;
 
 import java.util.Scanner;
 
+/**
+ * Interface com menus texto para manipular o sistema MrBet.
+ * 
+ * @author Nicole Brito Maracajá
+ */
 public class MainMrBet {
 
 	public static void main(String[] args) {
 		MrBetSistema mb = new MrBetSistema();
-
 		Scanner scanner = new Scanner(System.in);
+		
 		String escolha = "";
 		while (true) {
 			escolha = menu(scanner);
@@ -46,22 +51,22 @@ public class MainMrBet {
 	private static void comando(String opcao, MrBetSistema mb, Scanner scanner) {
 		switch (opcao) {
 		case "M":
-			incluiTime(mb, scanner);
+			incluiTime(scanner, mb);
 			break;
 		case "R":
-			recuperaTime(mb);
+			recuperaTime(scanner, mb);
 			break;
 		case ".":
-			detalharFilme(mb, scanner);
+			adicionaCampeonato(scanner, mb);
 			break;
 		case "B":
-			exibirHotList(mb);
+			incluiTimeCampeonato(scanner, mb);
 			break;
 		case "E":
-			adicionarHot(mb, scanner);
+			exibeTimes(scanner, mb);
 			break;
 		case "T":
-			removerHot(mb, scanner);
+			tentaSorteStatus(scanner, mb);
 			break;
 		case "!":
 			sai();
@@ -70,7 +75,90 @@ public class MainMrBet {
 			System.out.println("Opção inválida!");
 		}
 	}
+
+	/**
+	 * Inclui time no sistema MrBet.
+	 * @param Scanner.
+	 * @param MrBetSistema.
+	 */
+	private static void incluiTime(Scanner scanner, MrBetSistema mb) {
+		
+		System.out.println("Código: ");
+		scanner.nextLine();
+		String codigo = scanner.nextLine();
+		System.out.println("Nome: ");
+		String nome = scanner.nextLine();
+		System.out.println("Mascote: ");
+		String mascote = scanner.nextLine();
+		
+		mb.cadastraTime(codigo, nome, mascote);
+	}
 	
+	/**
+	 * Retorna a representação textual do time.
+	 * @param Scanner.
+	 * @param MrBetSistema.
+	 */
+	private static void recuperaTime(Scanner scanner, MrBetSistema mb) {
+		
+		System.out.println("Código: ");
+		scanner.nextLine();
+		String codigo = scanner.nextLine();
+		System.out.println(mb.recuperaTime(codigo).toString());
+	}
+
+	/**
+	 * Adiciona um campeonato ao sistema MrBet.
+	 * @param Scanner
+	 * @param MrBetSistema.
+	 */
+	private static void adicionaCampeonato(Scanner scanner, MrBetSistema mb) {
+		
+		System.out.println("Campeonato: ");
+		scanner.nextLine();
+		String nome = scanner.nextLine();
+		System.out.println("Participantes: ");
+		int participantes = scanner.nextInt();
+		
+		System.out.println(mb.adicionaCampeonato(nome, participantes));
+	}
+	
+	/**
+	 * Inclui um time em um campeonato.
+	 * @param Scanner.
+	 * @param MrBetSistema.
+	 */
+	private static void incluiTimeCampeonato(Scanner scanner, MrBetSistema mb) {
+		
+		System.out.println("(I) Incluir time em campeonato ou (V) Verificar se time está em campeonato?" );
+		char escolha = scanner.next().toLowerCase().charAt(0);
+		
+		if (escolha == 'I') {
+			
+			System.out.println("Código: ");
+			scanner.nextLine();
+			String codigo = scanner.nextLine();
+			System.out.println("Campeonato: ");
+			String campeonato = scanner.nextLine();
+			System.out.println(mb.adicionaTimeEmCampeonato(codigo, campeonato));
+		}
+		
+		if (escolha == 'V') {
+			
+			System.out.println("Código: ");
+			scanner.nextLine();
+			String codigo = scanner.nextLine();
+			System.out.println("Campeonato: ");
+			String campeonato = scanner.nextLine();
+			System.out.println(mb.verificaTimeEmCampeonato(codigo, campeonato));
+		}
+	}
+
+	private static void exibeTimes(Scanner scanner, MrBetSistema mb) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
 	 * Sai da aplicação.
 	 */
