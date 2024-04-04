@@ -32,7 +32,7 @@ public class Campeonato {
 	/**
 	 * Um construtor que registra um novo campeonato.
 	 * @param nome Nome do Campeonato.
-	 * @param participantes Quantidade de participantes do Campeonato.
+	 * @param qtdMaxParticipantes Quantidade máxima de participantes do campeonato.
 	 */
 	public Campeonato(String nome, int qtdMaxParticipantes) {
 		this.nome = nome;

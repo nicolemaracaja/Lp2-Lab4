@@ -45,6 +45,10 @@ public class Time {
 		return this.id;
 	}
 	
+	/**
+	 * Retorna o nome do time.
+	 * @return nome Nome do time.
+	 */
 	public String getNome() {
 		return this.nome;
 	}

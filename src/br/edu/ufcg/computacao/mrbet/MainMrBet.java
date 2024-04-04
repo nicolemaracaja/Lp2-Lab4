@@ -63,7 +63,7 @@ public class MainMrBet {
 			incluiTimeCampeonato(scanner, mb);
 			break;
 		case "E":
-			exibeTimes(scanner, mb);
+			exibeCampeonatos(scanner, mb);
 			break;
 		case "T":
 			tentaSorteStatus(scanner, mb);
@@ -85,13 +85,18 @@ public class MainMrBet {
 		
 		System.out.println("Código: ");
 		scanner.nextLine();
-		String codigo = scanner.nextLine();
+		String idTime = scanner.nextLine().toUpperCase();
 		System.out.println("Nome: ");
 		String nome = scanner.nextLine();
 		System.out.println("Mascote: ");
 		String mascote = scanner.nextLine();
-		
-		mb.cadastraTime(codigo, nome, mascote);
+	
+		if (mb.recuperaTime(idTime) != "TIME NÃO EXISTE!") { //time já existe no sistema
+			System.out.println("TIME JÁ EXISTE!");
+		}else {
+			mb.cadastraTime(idTime, nome, mascote);
+			System.out.println("INCLUSÃO REALIZADA!");
+		}
 	}
 	
 	/**
@@ -103,8 +108,8 @@ public class MainMrBet {
 		
 		System.out.println("Código: ");
 		scanner.nextLine();
-		String codigo = scanner.nextLine();
-		System.out.println(mb.recuperaTime(codigo).toString());
+		String idTime = scanner.nextLine().toUpperCase();
+		System.out.println(mb.recuperaTime(idTime).toString());
 	}
 
 	/**
@@ -116,11 +121,16 @@ public class MainMrBet {
 		
 		System.out.println("Campeonato: ");
 		scanner.nextLine();
-		String nome = scanner.nextLine();
+		String nome = scanner.nextLine().toLowerCase();
 		System.out.println("Participantes: ");
 		int participantes = scanner.nextInt();
 		
-		System.out.println(mb.adicionaCampeonato(nome, participantes));
+		if (mb.recuperaCampeonato(nome.toLowerCase()) != "CAMPEONATO NÃO EXISTE!") { //campeonato já existe no sistema
+			System.out.println("CAMPEONATO JÁ EXISTE!");
+		}else {
+			mb.adicionaCampeonato(nome, participantes);
+			System.out.println("CAMPEONATO ADICIONADO!");
+		}
 	}
 	
 	/**
@@ -131,31 +141,88 @@ public class MainMrBet {
 	private static void incluiTimeCampeonato(Scanner scanner, MrBetSistema mb) {
 		
 		System.out.println("(I) Incluir time em campeonato ou (V) Verificar se time está em campeonato?" );
-		char escolha = scanner.next().toLowerCase().charAt(0);
+		String escolha = scanner.next().toUpperCase();
 		
-		if (escolha == 'I') {
+		if (escolha.equals("I")) {
 			
 			System.out.println("Código: ");
 			scanner.nextLine();
-			String codigo = scanner.nextLine();
+			String idTime = scanner.nextLine().toUpperCase();
 			System.out.println("Campeonato: ");
-			String campeonato = scanner.nextLine();
-			System.out.println(mb.adicionaTimeEmCampeonato(codigo, campeonato));
+			String campeonato = scanner.nextLine().toUpperCase();
+			
+			if (mb.adicionaTimeEmCampeonato(idTime, campeonato) == "TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS!") {
+				System.out.println("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS!");
+			}else if (mb.verificaTimeEmCampeonato(idTime, campeonato) == "TIME NÃO EXISTE!") { //time não existe no sistema
+				System.out.println("O TIME NÃO EXISTE!");
+			}else if (mb.verificaTimeEmCampeonato(idTime, campeonato) == "CAMPEONATO NÃO EXISTE!") { //campeonato não existe no sistema
+				System.out.println("O CAMPEONATO NÃO EXISTE!");
+			}else {
+				System.out.println(mb.adicionaTimeEmCampeonato(idTime, campeonato));
+			}
 		}
 		
-		if (escolha == 'V') {
+		if (escolha.equals("V")) {
 			
 			System.out.println("Código: ");
 			scanner.nextLine();
-			String codigo = scanner.nextLine();
+			String idTime = scanner.nextLine().toUpperCase();
 			System.out.println("Campeonato: ");
-			String campeonato = scanner.nextLine();
-			System.out.println(mb.verificaTimeEmCampeonato(codigo, campeonato));
+			String campeonato = scanner.nextLine().toUpperCase();
+			
+			if (mb.verificaTimeEmCampeonato(idTime, campeonato) == "TIME NÃO EXISTE!") { //time não existe no sistema
+				System.out.println("O TIME NÃO EXISTE!");
+			}else if (mb.verificaTimeEmCampeonato(idTime, campeonato) == "CAMPEONATO NÃO EXISTE!") { //campeonato não existe no sistema
+				System.out.println("O CAMPEONATO NÃO EXISTE!");
+			}else if (mb.verificaTimeEmCampeonato(idTime, campeonato) == "TIME NÃO ESTÁ NO CAMPEONATO!") {
+				System.out.println("TIME NÃO ESTÁ NO CAMPEONATO!");
+			}else {
+				System.out.println(mb.verificaTimeEmCampeonato(idTime, campeonato));
+			}
 		}
 	}
 
-	private static void exibeTimes(Scanner scanner, MrBetSistema mb) {
-		// TODO Auto-generated method stub
+	/**
+	 * Exibe os campeonatos que um determinado time faz parte.
+	 * @param Scanner.
+	 * @param MrBetSistema.
+	 */
+	private static void exibeCampeonatos(Scanner scanner, MrBetSistema mb) {
+		
+		System.out.println("Time: ");
+		scanner.nextLine();
+		String idTime = scanner.nextLine();
+		System.out.println(mb.exibeCampeonatosTime(idTime).toString());
+		
+	}
+	
+	/**
+	 * Realiza uma aposta ou mostra a lista de apostas já feitas.
+	 * @param Scanner.
+	 * @param MrBetSistema.
+	 */
+	private static void tentaSorteStatus(Scanner scanner, MrBetSistema mb) {
+		
+		System.out.println("(A)Apostar ou (S)Status das Apostas? ");
+		String escolha = scanner.next().toUpperCase();
+		
+		if (escolha.equals("A")) {
+			System.out.println("Código: ");
+			scanner.nextLine();
+			String idTime = scanner.nextLine();
+			System.out.println("Campeonato: ");
+			String nomeCampeonato = scanner.nextLine();
+			System.out.println("Colocação: ");
+			int colocacao = scanner.nextInt();
+			System.out.println("Valor da aposta: ");
+			double valorAposta = scanner.nextDouble();
+			
+			mb.adicionaAposta(idTime, nomeCampeonato, colocacao, valorAposta);
+		}
+		
+		if (escolha.equals("S")) {
+			System.out.println(mb.listaApostas().toString());
+		}
 		
 	}
 
@@ -163,7 +230,7 @@ public class MainMrBet {
 	 * Sai da aplicação.
 	 */
 	private static void sai() {
-		System.out.println("\nVlw flw o/");
+		System.out.println("\nIsso é tudo, pessoal!");
 		System.exit(0);
 	}
 		
