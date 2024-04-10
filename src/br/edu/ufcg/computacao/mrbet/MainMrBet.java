@@ -157,17 +157,15 @@ public class MainMrBet {
 					System.out.println("TIME NÃO EXISTE!");
 					return;
 				}else if(msg.equals("CAMPEONATO NÃO EXISTE!")) {
-					System.out.println("TIME NÃO EXISTE!");
+					System.out.println("CAMPEONATO NÃO EXISTE!");
 					return;
-				}else if (msg.equals("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUIDOS!")) {
-				
-					System.out.println("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUIDOS");
+				}else if (msg.equals("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS!")) {	
+					System.out.println("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS");
 					return;
 				}	
 			}
-			mb.adicionaTimeEmCampeonato(idTime, campeonato);
-			System.out.println("TIME INCLUIDO NO CAMPEONATO!");
-		}
+			System.out.println("TIME INCLUíDO NO CAMPEONATO!");
+			}
 		
 		if (escolha.equals("V")) {
 			
@@ -177,15 +175,23 @@ public class MainMrBet {
 			System.out.println("Campeonato: ");
 			String campeonato = scanner.nextLine().toUpperCase();
 			
-			if (mb.verificaTimeEmCampeonato(idTime, campeonato) == "TIME NÃO EXISTE!") { //time não existe no sistema
-				System.out.println("O TIME NÃO EXISTE!");
-			}else if (mb.verificaTimeEmCampeonato(idTime, campeonato) == "CAMPEONATO NÃO EXISTE!") { //campeonato não existe no sistema
-				System.out.println("O CAMPEONATO NÃO EXISTE!");
-			}else if (mb.verificaTimeEmCampeonato(idTime, campeonato) == "TIME NÃO ESTÁ NO CAMPEONATO!") {
-				System.out.println("TIME NÃO ESTÁ NO CAMPEONATO!");
-			}else {
-				System.out.println(mb.verificaTimeEmCampeonato(idTime, campeonato));
+			try {
+				mb.verificaTimeEmCampeonato(idTime, campeonato);
+			}catch(IllegalArgumentException iae) {
+				String msg = iae.getMessage();
+				
+				if(msg.equals("TIME NÃO EXISTE!")) {
+					System.out.println("TIME NÃO EXISTE!");
+					return;
+				}else if(msg.equals("CAMPEONATO NÃO EXISTE!")) {
+					System.out.println("CAMPEONATO NÃO EXISTE!");
+					return;
+				}else if (msg.equals("TIME NÃO ESTÁ NO CAMPEONATO!")) {
+					System.out.println("TIME NÃO ESTÁ NO CAMPEONATO!");
+					return;
+				}	
 			}
+			System.out.println("TIME ESTÁ NO CAMPEONATO!");
 		}
 	}
 

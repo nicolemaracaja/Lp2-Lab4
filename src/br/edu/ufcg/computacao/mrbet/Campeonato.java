@@ -94,6 +94,6 @@ public class Campeonato {
 	 */
 	@Override
 	public String toString() {
-		return this.nome + " - " + this.timesNoCampeonato.size() + "/" + this.qtdParticipantes;
+		return this.nome + " - " + this.timesNoCampeonato.size() + "/" + this.qtdMaxParticipantes;
 	}
 }

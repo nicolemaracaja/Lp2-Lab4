@@ -113,7 +113,7 @@ public class MrBetSistema {
 			throw new IllegalArgumentException("CAMPEONATO NÃO EXISTE!");
 		}
 		if (campeonatos.get(campeonato).getParticipantes() > campeonatos.get(campeonato).getMaxParticipantes()) {
-			throw new IllegalArgumentException("CAMPEONATO NÃO EXISTE!");
+			throw new IllegalArgumentException("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS!");
 		}
 		return true;
 	}
@@ -123,8 +123,9 @@ public class MrBetSistema {
 	 * @param idTime Código do time.
 	 * @param campeonato Nome do campeonato.
 	 */
-	public void adicionaTimeEmCampeonato(String idTime, String campeonato) {
-		campeonatos.get(campeonato).adicionaTime(idTime, times.get(idTime));			
+	public String adicionaTimeEmCampeonato(String idTime, String campeonato) {
+		campeonatos.get(campeonato).adicionaTime(idTime, times.get(idTime));
+		return "TIME INCLUÍDO NO CAMPEONATO!";
 	}
 	
 	/**
@@ -133,16 +134,16 @@ public class MrBetSistema {
 	 * @param campeonato Campeonato que será verificado.
 	 * @return Uma string com o status da ação.
 	 */
-	public String verificaTimeEmCampeonato(String idTime, String campeonato) {
+	public boolean verificaTimeEmCampeonato(String idTime, String campeonato) {
 		
 		if(!campeonatos.containsKey(campeonato)) {
-			return "O CAMPEONATO NÃO EXISTE!";
-		}else if(!times.containsKey(idTime)) {
-			return "O TIME NÃO EXISTE!";
+			throw new IllegalArgumentException("CAMPEONATO NÃO EXISTE!");
+		}else if(!times.containsKey(idTime)) { 
+			throw new IllegalArgumentException("TIME NÃO EXISTE!");
 		}else if(campeonatos.get(campeonato).verificaTime(idTime) == false) {
-			return "TIME NÃO ESTÁ NO CAMPEONATO!";	
+			throw new IllegalArgumentException("TIME NÃO ESTÁ NO CAMPEONATO!");
 		}
-		return "O TIME ESTÁ NO CAMPEONATO!";
+		return true;
 	}
 	
 	/**
@@ -154,12 +155,12 @@ public class MrBetSistema {
 		
 		String saida = "";
 		
-		if(!times.containsKey(idTime.toUpperCase())) {
+		if(!times.containsKey(idTime)) {
 			return "O TIME NÃO EXISTE!";
 		}else {
-			saida = "Campeonatos do " + times.get(idTime.toUpperCase()).getNome() + ": \n";
+			saida = "Campeonatos do " + times.get(idTime).getNome() + ": \n";
 			for(Campeonato campeonato: campeonatos.values()) {
-				if(campeonato.verificaTime(idTime.toUpperCase()) == true) {
+				if(campeonato.verificaTime(idTime) == true) {
 					saida += "* " + campeonato.toString() + "\n";
 				}
 			}
