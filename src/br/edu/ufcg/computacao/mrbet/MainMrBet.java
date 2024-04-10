@@ -91,11 +91,10 @@ public class MainMrBet {
 		System.out.println("Mascote: ");
 		String mascote = scanner.nextLine();
 	
-		if (mb.recuperaTime(idTime) != "TIME NÃO EXISTE!") { //time já existe no sistema
-			System.out.println("TIME JÁ EXISTE!");
-		}else {
-			mb.cadastraTime(idTime, nome, mascote);
-			System.out.println("INCLUSÃO REALIZADA!");
+		try {
+			System.out.println(mb.cadastraTime(idTime, nome, mascote)); 		
+		}catch(IllegalArgumentException iae) {
+			System.out.println(iae.getMessage());
 		}
 	}
 	
@@ -121,18 +120,16 @@ public class MainMrBet {
 		
 		System.out.println("Campeonato: ");
 		scanner.nextLine();
-		String nome = scanner.nextLine().toLowerCase();
+		String nome = scanner.nextLine().toUpperCase();
 		System.out.println("Participantes: ");
 		int participantes = scanner.nextInt();
 		
-		if (mb.recuperaCampeonato(nome.toLowerCase()) != "CAMPEONATO NÃO EXISTE!") { //campeonato já existe no sistema
-			System.out.println("CAMPEONATO JÁ EXISTE!");
-		}else {
-			mb.adicionaCampeonato(nome, participantes);
-			System.out.println("CAMPEONATO ADICIONADO!");
+		try {
+			System.out.println(mb.adicionaCampeonato(nome, participantes)); 		
+		}catch(IllegalArgumentException iae) {
+			System.out.println(iae.getMessage());
 		}
 	}
-	
 	/**
 	 * Inclui um time em um campeonato.
 	 * @param Scanner.
@@ -151,15 +148,25 @@ public class MainMrBet {
 			System.out.println("Campeonato: ");
 			String campeonato = scanner.nextLine().toUpperCase();
 			
-			if (mb.adicionaTimeEmCampeonato(idTime, campeonato) == "TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS!") {
-				System.out.println("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS!");
-			}else if (mb.verificaTimeEmCampeonato(idTime, campeonato) == "TIME NÃO EXISTE!") { //time não existe no sistema
-				System.out.println("O TIME NÃO EXISTE!");
-			}else if (mb.verificaTimeEmCampeonato(idTime, campeonato) == "CAMPEONATO NÃO EXISTE!") { //campeonato não existe no sistema
-				System.out.println("O CAMPEONATO NÃO EXISTE!");
-			}else {
-				System.out.println(mb.adicionaTimeEmCampeonato(idTime, campeonato));
+			try {
+				mb.podeAdicionarCampeonato(idTime, campeonato);
+			}catch(IllegalArgumentException iae) {
+				String msg = iae.getMessage();
+				
+				if(msg.equals("TIME NÃO EXISTE!")) {
+					System.out.println("TIME NÃO EXISTE!");
+					return;
+				}else if(msg.equals("CAMPEONATO NÃO EXISTE!")) {
+					System.out.println("TIME NÃO EXISTE!");
+					return;
+				}else if (msg.equals("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUIDOS!")) {
+				
+					System.out.println("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUIDOS");
+					return;
+				}	
 			}
+			mb.adicionaTimeEmCampeonato(idTime, campeonato);
+			System.out.println("TIME INCLUIDO NO CAMPEONATO!");
 		}
 		
 		if (escolha.equals("V")) {
@@ -230,7 +237,7 @@ public class MainMrBet {
 	 * Sai da aplicação.
 	 */
 	private static void sai() {
-		System.out.println("\nIsso é tudo, pessoal!");
+		System.out.println("\nPor hoje é só pessoal!");
 		System.exit(0);
 	}
 		

@@ -47,7 +47,7 @@ public class MrBetSistema {
 	 */
 	public String cadastraTime(String id, String nome, String mascote) {
 		Time time = new Time(id, nome, mascote);
-		
+			
 		if (times.containsKey(id.toUpperCase())) {
 			throw new IllegalArgumentException("TIME JÁ EXISTE!");
 		}
@@ -77,10 +77,10 @@ public class MrBetSistema {
 	public String adicionaCampeonato(String nome, int qtdParticipantes) {
 		Campeonato campeonato = new Campeonato(nome, qtdParticipantes);
 		
-		if(campeonatos.containsKey(nome.toUpperCase())) {
+		if(campeonatos.containsKey(nome)) {
 			throw new IllegalArgumentException("CAMPEONATO JÁ EXISTE!");
 		}else {
-			campeonatos.put(nome.toUpperCase(), campeonato);
+			campeonatos.put(nome, campeonato);
 			return "CAMPEONATO ADICIONADO!";
 		}
 	}
@@ -92,30 +92,39 @@ public class MrBetSistema {
 	 */
 	public String recuperaCampeonato(String nome) {
 		
-		if(this.campeonatos.get(nome.toUpperCase()) != null) {
-			return this.campeonatos.get(nome.toUpperCase()).toString();
+		if(this.campeonatos.get(nome) != null) {
+			return this.campeonatos.get(nome).toString();
 		}
 		return "CAMPEONATO NÃO EXISTE!";
+	}
+	
+	/**
+	 * Verifica as condições para incluir um time no campeonato.
+	 * @param idTime O identificador do timne.
+	 * @param campeonato O nome do campeonato.
+	 * @return true ou false.
+	 */
+	public boolean podeAdicionarCampeonato(String idTime, String campeonato) {
+		
+		if (!times.containsKey(idTime)) {
+			throw new IllegalArgumentException("TIME NÃO EXISTE!");
+		}
+		if (!campeonatos.containsKey(campeonato)) {
+			throw new IllegalArgumentException("CAMPEONATO NÃO EXISTE!");
+		}
+		if (campeonatos.get(campeonato).getParticipantes() > campeonatos.get(campeonato).getMaxParticipantes()) {
+			throw new IllegalArgumentException("CAMPEONATO NÃO EXISTE!");
+		}
+		return true;
 	}
 	
 	/**
 	 * Adiciona times a um campeonato.
 	 * @param idTime Código do time.
 	 * @param campeonato Nome do campeonato.
-	 * @return Uma string com o status da ação.
 	 */
-	public String adicionaTimeEmCampeonato(String idTime, String campeonato) {
-		
-		if(!campeonatos.containsKey(campeonato.toUpperCase())) {
-			return "CAMPEONATO NÃO EXISTE!";
-		}else if(!times.containsKey(idTime.toUpperCase())) {
-			return "TIME NÃO EXISTE!";
-		}else if(campeonatos.get(campeonato.toUpperCase()).getParticipantes() >= campeonatos.get(campeonato.toUpperCase()).getMaxParticipantes()) {
-			return "TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS!";
-		}else {
-			campeonatos.get(campeonato.toUpperCase()).adicionaTime(idTime.toUpperCase(), times.get(idTime));
-			return "TIME INCLUÍDO NO CAMPEONATO!";
-		}		
+	public void adicionaTimeEmCampeonato(String idTime, String campeonato) {
+		campeonatos.get(campeonato).adicionaTime(idTime, times.get(idTime));			
 	}
 	
 	/**
@@ -126,11 +135,11 @@ public class MrBetSistema {
 	 */
 	public String verificaTimeEmCampeonato(String idTime, String campeonato) {
 		
-		if(!campeonatos.containsKey(campeonato.toUpperCase())) {
+		if(!campeonatos.containsKey(campeonato)) {
 			return "O CAMPEONATO NÃO EXISTE!";
-		}else if(!times.containsKey(idTime.toUpperCase())) {
+		}else if(!times.containsKey(idTime)) {
 			return "O TIME NÃO EXISTE!";
-		}else if(campeonatos.get(campeonato.toUpperCase()).verificaTime(idTime.toUpperCase()) == false) {
+		}else if(campeonatos.get(campeonato).verificaTime(idTime) == false) {
 			return "TIME NÃO ESTÁ NO CAMPEONATO!";	
 		}
 		return "O TIME ESTÁ NO CAMPEONATO!";
