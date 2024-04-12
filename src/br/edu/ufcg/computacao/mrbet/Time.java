@@ -1,12 +1,11 @@
 package br.edu.ufcg.computacao.mrbet;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
  * Constrói o timne a partir de seu identificador, nome e mascote.
  * 
- * @author Nicole Brito Maracajá
+ * @author Nicole Brito Maracajá - 123111413.
  */
 public class Time {
 
@@ -68,15 +67,6 @@ public class Time {
 			return false;
 		Time other = (Time) obj;
 		return Objects.equals(id, other.id);
-	}
-	
-	/**
-	 * Verifica se o time existe.
-	 * @param times Lista de times cadastrados no sistema.
-	 */
-	public boolean jaExiste(List<Time> times) {
-		Time t = this;
-		return times.contains(t);
 	}
 	
 	/**

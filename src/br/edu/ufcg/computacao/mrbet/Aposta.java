@@ -3,7 +3,7 @@ package br.edu.ufcg.computacao.mrbet;
 /**
  * Classe que cria uma aposta.
  * 
- * @author Nicole Brito Maracajá.
+ * @author Nicole Brito Maracajá - 123111413.
  */
 public class Aposta {
 
@@ -60,7 +60,7 @@ public class Aposta {
 	@Override
 	public String toString() {
 		return this.time + "\n" + this.campeonato.getNome() + "\n" 
-		+ this.colocacao + "/" + this.campeonato.getParticipantes() + "\n"
+		+ this.colocacao + "/" + this.campeonato.getMaxParticipantes() + "\n"
 		+ "R$ " + String.format("%.2f", this.valorAposta);				
 	}
 }

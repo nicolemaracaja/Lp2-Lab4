@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Interface com menus texto para manipular o sistema MrBet.
  * 
- * @author Nicole Brito Maracajá
+ * @author Nicole Brito Maracajá - 123111413.
  */
 public class MainMrBet {
 
@@ -150,6 +150,8 @@ public class MainMrBet {
 			
 			try {
 				mb.podeAdicionarCampeonato(idTime, campeonato);
+				mb.adicionaTimeEmCampeonato(idTime, campeonato);
+				System.out.println("TIME INCLUíDO NO CAMPEONATO!");
 			}catch(IllegalArgumentException iae) {
 				String msg = iae.getMessage();
 				
@@ -160,11 +162,10 @@ public class MainMrBet {
 					System.out.println("CAMPEONATO NÃO EXISTE!");
 					return;
 				}else if (msg.equals("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS!")) {	
-					System.out.println("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS");
+					System.out.println("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS!");
 					return;
 				}	
 			}
-			System.out.println("TIME INCLUíDO NO CAMPEONATO!");
 			}
 		
 		if (escolha.equals("V")) {
@@ -204,7 +205,7 @@ public class MainMrBet {
 		
 		System.out.println("Time: ");
 		scanner.nextLine();
-		String idTime = scanner.nextLine();
+		String idTime = scanner.nextLine().toUpperCase();
 		System.out.println(mb.exibeCampeonatosTime(idTime).toString());
 		
 	}
@@ -222,15 +223,19 @@ public class MainMrBet {
 		if (escolha.equals("A")) {
 			System.out.println("Código: ");
 			scanner.nextLine();
-			String idTime = scanner.nextLine();
+			String idTime = scanner.nextLine().toUpperCase();
 			System.out.println("Campeonato: ");
-			String nomeCampeonato = scanner.nextLine();
+			String nomeCampeonato = scanner.nextLine().toUpperCase();
 			System.out.println("Colocação: ");
 			int colocacao = scanner.nextInt();
 			System.out.println("Valor da aposta: ");
 			double valorAposta = scanner.nextDouble();
 			
-			mb.adicionaAposta(idTime, nomeCampeonato, colocacao, valorAposta);
+			try{
+				System.out.println(mb.adicionaAposta(idTime, nomeCampeonato, colocacao, valorAposta));
+			}catch(IllegalArgumentException iae) {
+				System.out.println(iae.getMessage());
+			}
 		}
 		
 		if (escolha.equals("S")) {

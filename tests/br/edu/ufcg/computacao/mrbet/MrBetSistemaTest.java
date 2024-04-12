@@ -6,6 +6,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Classe que testa as funcionalidades do controller do sistema MrBet.
+ * @author Nicole Brito Maracajá - 123111413.
+ */
 class MrBetSistemaTest {
 
 	private MrBetSistema mb;
@@ -84,7 +88,7 @@ class MrBetSistemaTest {
 	@Test
 	void testAdicionaTimeemCampeonatoQueNaoExiste() { //caso 6
 		try {
-			mb.adicionaTimeEmCampeonato("252_PB", "Brasileirão Série D 2023");
+			mb.adicionaTimeEmCampeonato(time2.getId(), "Brasileirão Série D 2023");
 			fail();
 		}catch(IllegalArgumentException iae) {
 			assertEquals("CAMPEONATO NÃO EXISTE!", iae.getMessage());

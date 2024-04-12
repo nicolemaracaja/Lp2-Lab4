@@ -1,11 +1,11 @@
 package br.edu.ufcg.computacao.mrbet;
 
-import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Constrói o campeonato a partir de seu nome e quantidade de participantes.
  * 
- * @author Nicole Brito Maracajá
+ * @author Nicole Brito Maracajá - 123111413.
  */
 public class Campeonato {
 
@@ -22,12 +22,12 @@ public class Campeonato {
 	/**
 	 * Quantidade máxima de times que podem participar.
 	 */
-	private int qtdMaxParticipantes;
+	private final int qtdMaxParticipantes;
 	
 	/**
-	 * Mapa que associa os times ao campeonato.
+	 * Set que associa os times ao campeonato.
 	 */
-	private HashMap<String, Time> timesNoCampeonato; 
+	private HashSet<Time> timesNoCampeonato; 
 	
 	/**
 	 * Um construtor que registra um novo campeonato.
@@ -38,7 +38,7 @@ public class Campeonato {
 		this.nome = nome;
 		this.qtdMaxParticipantes = qtdMaxParticipantes;
 		this.qtdParticipantes = 0;
-		this.timesNoCampeonato = new HashMap<>();		
+		this.timesNoCampeonato = new HashSet<>();		
 	}
 	
 	/**
@@ -66,13 +66,25 @@ public class Campeonato {
 	
 	/**
 	 * Adiciona times no campeonato.
-	 * @param nome Nome do time.
 	 * @param time Time.
+	 * @return true se adicionou, se não, false.
 	 */
-	public void adicionaTime(String nome, Time time) {
+	public boolean adicionaTime(Time time) {
 
 		if (this.qtdParticipantes < this.qtdMaxParticipantes) {
-			this.timesNoCampeonato.put(nome, time);	
+			this.timesNoCampeonato.add(time);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Incrementa a quantidade de participantes no campeonato.
+	 * @param nome Nome do campeonato.
+	 * @param time Time.
+	 */
+	public void incrementaParticipantes(Time time) {
+		if (adicionaTime(time)) {
 			this.qtdParticipantes++;
 		}
 	}
@@ -82,8 +94,8 @@ public class Campeonato {
 	 * @param nome Nome do time.
 	 * @return um valor booleano, true se o time estiver no campeonato, false caso contrário.
 	 */
-	public boolean verificaTime(String nome) {
-		if(this.timesNoCampeonato.containsKey(nome)) {
+	public boolean verificaTime(Time time) {
+		if(this.timesNoCampeonato.contains(time)) {
 			return true;
 		}
 		return false;

@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * MrBetSistema, que implementa as funções incorporadas no Main.
  * 
- * @author Nicole Brito Maracajá.
+ * @author Nicole Brito Maracajá - 123111413.
  */
 public class MrBetSistema {
 	
@@ -112,7 +112,7 @@ public class MrBetSistema {
 		if (!campeonatos.containsKey(campeonato)) {
 			throw new IllegalArgumentException("CAMPEONATO NÃO EXISTE!");
 		}
-		if (campeonatos.get(campeonato).getParticipantes() > campeonatos.get(campeonato).getMaxParticipantes()) {
+		if (campeonatos.get(campeonato).getParticipantes() >= campeonatos.get(campeonato).getMaxParticipantes()) {
 			throw new IllegalArgumentException("TODOS OS TIMES DESSE CAMPEONATO JÁ FORAM INCLUÍDOS!");
 		}
 		return true;
@@ -122,9 +122,15 @@ public class MrBetSistema {
 	 * Adiciona times a um campeonato.
 	 * @param idTime Código do time.
 	 * @param campeonato Nome do campeonato.
+	 * @return Uma string com o status da ação.
 	 */
 	public String adicionaTimeEmCampeonato(String idTime, String campeonato) {
-		campeonatos.get(campeonato).adicionaTime(idTime, times.get(idTime));
+		try {
+			campeonatos.get(campeonato).adicionaTime(times.get(idTime));
+			campeonatos.get(campeonato).incrementaParticipantes(times.get(idTime));
+		}catch(IllegalArgumentException iae) {
+			return iae.getMessage();
+		}
 		return "TIME INCLUÍDO NO CAMPEONATO!";
 	}
 	
@@ -140,7 +146,7 @@ public class MrBetSistema {
 			throw new IllegalArgumentException("CAMPEONATO NÃO EXISTE!");
 		}else if(!times.containsKey(idTime)) { 
 			throw new IllegalArgumentException("TIME NÃO EXISTE!");
-		}else if(campeonatos.get(campeonato).verificaTime(idTime) == false) {
+		}else if(campeonatos.get(campeonato).verificaTime(times.get(idTime)) == false) {
 			throw new IllegalArgumentException("TIME NÃO ESTÁ NO CAMPEONATO!");
 		}
 		return true;
@@ -160,7 +166,7 @@ public class MrBetSistema {
 		}else {
 			saida = "Campeonatos do " + times.get(idTime).getNome() + ": \n";
 			for(Campeonato campeonato: campeonatos.values()) {
-				if(campeonato.verificaTime(idTime) == true) {
+				if(campeonato.verificaTime(times.get(idTime)) == true) {
 					saida += "* " + campeonato.toString() + "\n";
 				}
 			}
@@ -179,16 +185,16 @@ public class MrBetSistema {
 	public String adicionaAposta(String idTime, String nome, int colocacao, double valorAposta) {
 		
 		if (!times.containsKey(idTime)) {
-			return "TIME NÃO EXISTE!";
+			throw new IllegalArgumentException("TIME NÃO EXISTE!");
 		}else if (!campeonatos.containsKey(nome)) {
-			return "CAMPEONATO NÃO EXISTE!";
-		}else if (colocacao > campeonatos.get(nome).getParticipantes()) {
+			throw new IllegalArgumentException("CAMPEONATO NÃO EXISTE!");
+		}else if (colocacao > campeonatos.get(nome).getMaxParticipantes()) {
 			return "APOSTA NÃO REGISTRADA!";
 		}else {
 			Aposta aposta = new Aposta(times.get(idTime), campeonatos.get(nome), colocacao, valorAposta);
 			apostas.add(aposta);
-			return "APOSTA REGISTRADA!";
 		}
+		return "APOSTA REGISTRADA!";
 	}
 	
 	/**
@@ -199,7 +205,7 @@ public class MrBetSistema {
 		idAposta++;
 		String saida = "Apostas: \n\n";
 		for (Aposta aposta: apostas) {
-			saida += idAposta + ". " + aposta.toString();
+			saida += idAposta + ". " + aposta.toString() + "\n";
 		}
 		return saida;
 	}
