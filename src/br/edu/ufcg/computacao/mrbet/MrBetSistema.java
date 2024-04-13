@@ -49,6 +49,9 @@ public class MrBetSistema {
 	public String cadastraTime(String id, String nome, String mascote) {
 		Time time = new Time(id, nome, mascote);
 			
+		if (id == null || id.isBlank()) {
+			throw new IllegalArgumentException("CÓDIGO OBRIGATÓRIO!");
+		}
 		if (times.containsKey(id.toUpperCase())) {
 			throw new IllegalArgumentException("TIME JÁ EXISTE!");
 		}
@@ -80,6 +83,8 @@ public class MrBetSistema {
 		
 		if(campeonatos.containsKey(nome)) {
 			throw new IllegalArgumentException("CAMPEONATO JÁ EXISTE!");
+		}else if (nome == null || nome.isBlank()) {
+			throw new IllegalArgumentException("NOME OBRIGATÓRIO!");
 		}else {
 			campeonatos.put(nome, campeonato);
 			return "CAMPEONATO ADICIONADO!";

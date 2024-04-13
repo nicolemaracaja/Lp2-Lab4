@@ -1,6 +1,7 @@
 package br.edu.ufcg.computacao.mrbet;
 
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * Constrói o campeonato a partir de seu nome e quantidade de participantes.
@@ -101,6 +102,23 @@ public class Campeonato {
 		return false;
 	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(nome);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Campeonato other = (Campeonato) obj;
+		return getNome().toUpperCase().equalsIgnoreCase(other.getNome());
+	}
+
 	/**
 	 * Retorna uma String com as informaçoes sobre campeonato formatadas.
 	 */

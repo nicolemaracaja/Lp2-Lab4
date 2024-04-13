@@ -74,7 +74,7 @@ public class Time {
 		if (getClass() != obj.getClass())
 			return false;
 		Time other = (Time) obj;
-		return Objects.equals(id, other.id);
+		return getId().toUpperCase().equalsIgnoreCase(other.getId());
 	}
 	
 	/**
