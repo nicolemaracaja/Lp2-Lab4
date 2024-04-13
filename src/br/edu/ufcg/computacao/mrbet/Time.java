@@ -51,6 +51,14 @@ public class Time {
 	public String getNome() {
 		return this.nome;
 	}
+	
+	/**
+	 * Retorna o mascote do time.
+	 * @return mascote Mascote do time.
+	 */
+	public String getMascote() {
+		return this.mascote;
+	}
 
 	@Override
 	public int hashCode() {

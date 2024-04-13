@@ -1,6 +1,6 @@
 package br.edu.ufcg.computacao.mrbet;
 
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Interface com menus texto para manipular o sistema MrBet.
@@ -125,7 +125,7 @@ public class MainMrBet {
 		int participantes = scanner.nextInt();
 		
 		try {
-			System.out.println(mb.adicionaCampeonato(nome, participantes)); 		
+			System.out.println(mb.adicionaCampeonato(nome.toUpperCase(), participantes)); 		
 		}catch(IllegalArgumentException iae) {
 			System.out.println(iae.getMessage());
 		}
@@ -152,7 +152,7 @@ public class MainMrBet {
 				mb.podeAdicionarCampeonato(idTime, campeonato);
 				mb.adicionaTimeEmCampeonato(idTime, campeonato);
 				System.out.println("TIME INCLUíDO NO CAMPEONATO!");
-			}catch(IllegalArgumentException iae) {
+			}catch(NullPointerException | IndexOutOfBoundsException iae) {
 				String msg = iae.getMessage();
 				
 				if(msg.equals("TIME NÃO EXISTE!")) {
@@ -166,9 +166,9 @@ public class MainMrBet {
 					return;
 				}	
 			}
-			}
+		}
 		
-		if (escolha.equals("V")) {
+		else if (escolha.equals("V")) {
 			
 			System.out.println("Código: ");
 			scanner.nextLine();
@@ -178,7 +178,7 @@ public class MainMrBet {
 			
 			try {
 				mb.verificaTimeEmCampeonato(idTime, campeonato);
-			}catch(IllegalArgumentException iae) {
+			}catch(NullPointerException | IllegalArgumentException iae) {
 				String msg = iae.getMessage();
 				
 				if(msg.equals("TIME NÃO EXISTE!")) {
@@ -193,6 +193,10 @@ public class MainMrBet {
 				}	
 			}
 			System.out.println("TIME ESTÁ NO CAMPEONATO!");
+		}
+		
+		else {
+			System.out.println("Opção Inválida!");
 		}
 	}
 
@@ -217,6 +221,7 @@ public class MainMrBet {
 	 */
 	private static void tentaSorteStatus(Scanner scanner, MrBetSistema mb) {
 		
+		
 		System.out.println("(A)Apostar ou (S)Status das Apostas? ");
 		String escolha = scanner.next().toUpperCase();
 		
@@ -233,15 +238,18 @@ public class MainMrBet {
 			
 			try{
 				System.out.println(mb.adicionaAposta(idTime, nomeCampeonato, colocacao, valorAposta));
-			}catch(IllegalArgumentException iae) {
+			}catch(NullPointerException | IllegalArgumentException iae) {
 				System.out.println(iae.getMessage());
 			}
 		}
 		
-		if (escolha.equals("S")) {
+		else if (escolha.equals("S")) {
 			System.out.println(mb.listaApostas().toString());
 		}
 		
+		else {
+			System.out.println("Opção Inválida!");
+		}
 	}
 
 	/**
