@@ -1,5 +1,6 @@
 package br.edu.ufcg.computacao.mrbet;
 
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
